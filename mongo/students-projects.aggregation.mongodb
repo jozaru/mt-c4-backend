@@ -1,0 +1,46 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// BD name
+const database = 'mt-c4-db';
+
+// The current database to use.
+use(database);
+
+db.users.aggregate([{
+  $match: { role: 'student' }
+}, {
+  $lookup: {
+    from: 'enrollments',
+    as: 'projects',
+    let: { user_id: '$_id' },
+    pipeline: [{
+      $match: {
+        $expr: { 
+          $eq: [ '$user_id', '$$user_id' ]
+        }
+      }
+    }, {
+      $lookup: {
+        from: 'projects',
+        localField: 'project_id',
+        foreignField: '_id',
+        as: 'user_project'
+      }
+    }, { 
+      $unwind: '$user_project'
+    }, {
+      $addFields: {
+        name: '$user_project.name',
+        status: '$user_project.status'
+      }
+    }, {
+      $project: {
+        user_id: 0,
+        project_id: 0,
+        _id: 0,
+        user_project: 0
+      }
+    }]
+  }
+}]);

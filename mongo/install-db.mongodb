@@ -1,0 +1,322 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// BD name
+const database = 'mt-c4-db';
+
+// The current database to use.
+use(database);
+
+// users collection
+
+let collection = 'users';
+
+// Drop users collection
+db.getCollection(collection).drop();
+
+// Create a users collection
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['email', 'documentId', 'name', 'lastName', 'fullName', 'role', 'status'],
+      properties: {
+        email: {
+          bsonType: 'string',
+          pattern: '^[a-z0-9+_.-]+@[a-z0-9.-]+$'
+        },
+        documentId: {
+          bsonType: 'long',
+        },
+        name: {
+          bsonType: 'string'
+        },
+        lastName: {
+          bsonType: 'string'
+        },
+        fullName: {
+          bsonType: 'string'
+        },
+        role: {
+          enum: ["admin", "leader", "student"]
+        },
+        status: {
+          enum: ["pending", "authorized", "unauthorized"]
+        },
+        password: {
+          bsonType: 'string'
+        }
+      }
+    }
+  }
+});
+
+// Create unique index for email and documentId
+db.getCollection(collection).createIndex({ email: 1 }, { unique: true });
+db.getCollection(collection).createIndex({ documentId: 1 }, { unique: true });
+
+const users = [
+  {
+    "email": "tomas.anderson@mail.com",
+    "documentId": Long('1020345678'),
+    "name": "Tomas",
+    "lastName": "Anderson",
+    "fullName": "Tomas Anderson",
+    "role": "admin",
+    "status": "pending",
+    "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
+  },
+  {
+    "email": "peter.griffin@mail.com",
+    "documentId": Long('1234567890'),
+    "name": "Peter",
+    "lastName": "Griffin",
+    "fullName": "Peter Griffin",
+    "role": "student",
+    "status": "pending",
+    "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
+  },
+  {
+    "email": "walter.white@mail.com",
+    "documentId": Long('1025342546'),
+    "name": "Walter",
+    "lastName": "White",
+    "fullName": "Walter White",
+    "role": "leader",
+    "status": "pending",
+    "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
+  },
+  {
+    "email": "rick.sanchez@mail.com",
+    "documentId": Long('1021587653'),
+    "name": "Rick",
+    "lastName": "Sanchez",
+    "fullName": "Rick Sanchez",
+    "role": "student",
+    "status": "pending",
+    "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
+  },
+  {
+    "email": "john.snow@mail.com",
+    "documentId": Long('1022351234'),
+    "name": "John",
+    "lastName": "Snow",
+    "fullName": "John Snow",
+    "role": "leader",
+    "status": "pending",
+    "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
+  }
+];
+
+// Insert users
+db.getCollection(collection).insertMany(users);
+
+// projects collection
+
+collection = 'projects';
+
+// Drop projects collections
+db.getCollection(collection).drop();
+
+// Create projects collection
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['name', 'generalObjective', 'specificObjectives', 'budget', 'startDate', 'endDate', 'leader_id', 'status'],
+      properties: {
+        name: {
+          bsonType: 'string',
+        },
+        generalObjective: {
+          bsonType: 'string'
+        },
+        specificObjectives: {
+          bsonType: 'array'
+        },
+        budget: {
+          bsonType: 'decimal'
+        },
+        startDate: {
+          bsonType: 'date'
+        },
+        endDate: {
+          bsonType: 'date'
+        },
+        leader_id: {
+          bsonType: 'objectId'
+        },
+        status: {
+          enum: ['active', 'inactive']
+        },
+        phase: {
+          enum: ['started', 'in progress', 'ended']
+        }
+      }
+    }
+  }
+});
+
+const projects = [
+  {
+    "name": "Project 1",
+    "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
+    "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
+    "budget": Decimal128('20000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
+    "status": "inactive",
+  },
+  {
+    "name": "Project 2",
+    "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
+    "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
+    "budget": Decimal128('10000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
+    "status": "inactive",
+  },
+  {
+    "name": "Project 3",
+    "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
+    "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
+    "budget": Decimal128('15000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
+    "status": "inactive",
+  },
+  {
+    "name": "Project 4",
+    "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
+    "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
+    "budget": Decimal128('35000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
+    "status": "inactive",
+  }
+];
+
+// Insert projects
+db.getCollection(collection).insertMany(projects);
+
+// enrollments collection
+
+collection = 'enrollments';
+
+// Drop enrollments collection
+db.getCollection(collection).drop();
+
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['project_id', 'user_id'],
+      properties: {
+        project_id: {
+          bsonType: 'objectId',
+        },
+        user_id: {
+          bsonType: 'objectId'
+        },
+        status: {
+          enum: ['acepted', 'rejected']
+        },
+        enrollmentDate: {
+          bsonType: 'date'
+        },
+        egressDate: {
+          bsonType: 'date'
+        }
+      }
+    }
+  }
+});
+
+// Create unique index for project_id and user_id
+db.getCollection(collection).createIndex({ project_id: 1, user_id: 1 }, { unique: true, name: '_project_user_' });
+
+const enrollments = [
+  {
+    "project_id": db.projects.findOne({name: 'Project 1'}, {_id: 1})._id,
+    "user_id": db.users.findOne({email: 'peter.griffin@mail.com'}, {_id: 1})._id
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 1'}, {_id: 1})._id,
+    "user_id": db.users.findOne({email: 'rick.sanchez@mail.com'})._id
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 2'}, {_id: 1})._id,
+    "user_id": db.users.findOne({email: 'rick.sanchez@mail.com'})._id
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 3'}, {_id: 1})._id,
+    "user_id": db.users.findOne({email: 'peter.griffin@mail.com'})._id
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 4'}, {_id: 1})._id,
+    "user_id": db.users.findOne({email: 'rick.sanchez@mail.com'})._id
+  },
+];
+
+// Insert enrollments
+db.getCollection(collection).insertMany(enrollments);
+
+// advances collection
+collection = 'advances'
+
+// Drop advances collection
+db.getCollection(collection).drop();
+
+// Create advances collection
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['project_id', 'addDate', 'description', 'observations'],
+      properties: {
+        project_id: {
+          bsonType: 'objectId',
+        },
+        addDate: {
+          bsonType: 'date'
+        },
+        description: {
+          bsonType: 'string'
+        },
+        observations: {
+          bsonType: 'string'
+        }
+      }
+    }
+  }
+});
+
+const advances = [
+  {
+    "project_id": db.projects.findOne({name: 'Project 1'}, {_id: 1})._id,
+    "addDate": new Date(),
+    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent posuere eros libero, eu hendrerit leo maximus congue. Aliquam accumsan tortor quis suscipit imperdiet. Pellentesque blandit augue lacus, at sollicitudin orci luctus sit amet. Donec et ornare leo. Fusce sollicitudin eros a nisi ullamcorper, porttitor eleifend massa luctus. Morbi luctus tellus dui, et commodo justo euismod eget.',
+    "observations": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in dui et eros varius efficitur ut eget ex. Fusce faucibus dictum velit eget ultricies. Ut vitae efficitur ligula, nec interdum lacus. Phasellus id interdum neque. Fusce et velit id orci tempus maximus. Nam aliquam tincidunt tellus, eu condimentum sapien dictum sit amet. Aenean dictum volutpat facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc sit amet orci non nisi pharetra fringilla.',
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 2'}, {_id: 1})._id,
+    "addDate": new Date(),
+    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent posuere eros libero, eu hendrerit leo maximus congue. Aliquam accumsan tortor quis suscipit imperdiet. Pellentesque blandit augue lacus, at sollicitudin orci luctus sit amet. Donec et ornare leo. Fusce sollicitudin eros a nisi ullamcorper, porttitor eleifend massa luctus. Morbi luctus tellus dui, et commodo justo euismod eget.',
+    "observations": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in dui et eros varius efficitur ut eget ex. Fusce faucibus dictum velit eget ultricies. Ut vitae efficitur ligula, nec interdum lacus. Phasellus id interdum neque. Fusce et velit id orci tempus maximus. Nam aliquam tincidunt tellus, eu condimentum sapien dictum sit amet. Aenean dictum volutpat facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc sit amet orci non nisi pharetra fringilla.',
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 3'}, {_id: 1})._id,
+    "addDate": new Date(),
+    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent posuere eros libero, eu hendrerit leo maximus congue. Aliquam accumsan tortor quis suscipit imperdiet. Pellentesque blandit augue lacus, at sollicitudin orci luctus sit amet. Donec et ornare leo. Fusce sollicitudin eros a nisi ullamcorper, porttitor eleifend massa luctus. Morbi luctus tellus dui, et commodo justo euismod eget.',
+    "observations": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in dui et eros varius efficitur ut eget ex. Fusce faucibus dictum velit eget ultricies. Ut vitae efficitur ligula, nec interdum lacus. Phasellus id interdum neque. Fusce et velit id orci tempus maximus. Nam aliquam tincidunt tellus, eu condimentum sapien dictum sit amet. Aenean dictum volutpat facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc sit amet orci non nisi pharetra fringilla.',
+  },
+  {
+    "project_id": db.projects.findOne({name: 'Project 4'}, {_id: 1})._id,
+    "addDate": new Date(),
+    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent posuere eros libero, eu hendrerit leo maximus congue. Aliquam accumsan tortor quis suscipit imperdiet. Pellentesque blandit augue lacus, at sollicitudin orci luctus sit amet. Donec et ornare leo. Fusce sollicitudin eros a nisi ullamcorper, porttitor eleifend massa luctus. Morbi luctus tellus dui, et commodo justo euismod eget.',
+    "observations": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in dui et eros varius efficitur ut eget ex. Fusce faucibus dictum velit eget ultricies. Ut vitae efficitur ligula, nec interdum lacus. Phasellus id interdum neque. Fusce et velit id orci tempus maximus. Nam aliquam tincidunt tellus, eu condimentum sapien dictum sit amet. Aenean dictum volutpat facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc sit amet orci non nisi pharetra fringilla.',
+  }
+];
+
+// Insert advances
+db.getCollection(collection).insertMany(advances);

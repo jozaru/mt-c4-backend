@@ -1,0 +1,29 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// BD name
+const database = 'mt-c4-db';
+
+// The current database to use.
+use(database);
+
+db.projects.aggregate([{
+  $lookup: {
+    from: 'users',
+    localField: 'leader_id',
+    foreignField: '_id',
+    as: 'leader'
+  }
+}, {
+  $unwind: { path: '$leader' }
+}, {
+  $addFields: {
+    leaderDocumentId: '$leader.documentId',
+    leaderName: '$leader.fullName'
+  }
+}, {
+  $project: {
+    leader: 0,
+    leader_id: 0
+  }
+}]);
