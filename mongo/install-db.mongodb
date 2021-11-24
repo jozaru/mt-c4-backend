@@ -21,29 +21,29 @@ db.createCollection(collection, {
       required: ['email', 'documentId', 'name', 'lastName', 'fullName', 'role', 'status'],
       properties: {
         email: {
-          bsonType: 'string',
+          type: 'string',
           pattern: '^[a-z0-9+_.-]+@[a-z0-9.-]+$'
         },
         documentId: {
-          bsonType: 'long',
+          type: 'number',
         },
         name: {
-          bsonType: 'string'
+          type: 'string'
         },
         lastName: {
-          bsonType: 'string'
+          type: 'string'
         },
         fullName: {
-          bsonType: 'string'
+          type: 'string'
         },
         role: {
-          enum: ["admin", "leader", "student"]
+          enum: ["ADMIN", "LEADER", "STUDENT"]
         },
         status: {
-          enum: ["pending", "authorized", "unauthorized"]
+          enum: ["PENDING", "AUTHORIZED", "UNAUTHORIZED"]
         },
         password: {
-          bsonType: 'string'
+          type: 'string'
         }
       }
     }
@@ -61,8 +61,8 @@ const users = [
     "name": "Tomas",
     "lastName": "Anderson",
     "fullName": "Tomas Anderson",
-    "role": "admin",
-    "status": "pending",
+    "role": "ADMIN",
+    "status": "PENDING",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
@@ -71,8 +71,8 @@ const users = [
     "name": "Peter",
     "lastName": "Griffin",
     "fullName": "Peter Griffin",
-    "role": "student",
-    "status": "pending",
+    "role": "STUDENT",
+    "status": "PENDING",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
@@ -81,8 +81,8 @@ const users = [
     "name": "Walter",
     "lastName": "White",
     "fullName": "Walter White",
-    "role": "leader",
-    "status": "pending",
+    "role": "LEADER",
+    "status": "PENDING",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
@@ -91,8 +91,8 @@ const users = [
     "name": "Rick",
     "lastName": "Sanchez",
     "fullName": "Rick Sanchez",
-    "role": "student",
-    "status": "pending",
+    "role": "STUDENT",
+    "status": "PENDING",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
@@ -101,8 +101,8 @@ const users = [
     "name": "John",
     "lastName": "Snow",
     "fullName": "John Snow",
-    "role": "leader",
-    "status": "pending",
+    "role": "LEADER",
+    "status": "PENDING",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   }
 ];
@@ -145,10 +145,10 @@ db.createCollection(collection, {
           bsonType: 'objectId'
         },
         status: {
-          enum: ['active', 'inactive']
+          enum: ['ACTIVE', 'INACTIVE']
         },
         phase: {
-          enum: ['started', 'in progress', 'ended']
+          enum: ['STARTED', 'IN PROGRESS', 'ENDED']
         }
       }
     }
@@ -164,7 +164,7 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
-    "status": "inactive",
+    "status": "INACTIVE",
   },
   {
     "name": "Project 2",
@@ -174,7 +174,7 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
-    "status": "inactive",
+    "status": "INACTIVE",
   },
   {
     "name": "Project 3",
@@ -184,7 +184,7 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
-    "status": "inactive",
+    "status": "INACTIVE",
   },
   {
     "name": "Project 4",
@@ -194,7 +194,7 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
-    "status": "inactive",
+    "status": "INACTIVE",
   }
 ];
 
