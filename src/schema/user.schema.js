@@ -10,7 +10,7 @@ const userType = gql`
     lastName: String!
     fullName: String!
     role: Role!
-    status: userStatus!
+    status: UserStatus!
   }
 `;
 
@@ -23,7 +23,7 @@ const enums = gql`
   }
 
   # Enum for status values
-  enum userStatus {
+  enum UserStatus {
     PENDING
     AUTHORIZED
     UNAUTHORIZED
@@ -37,25 +37,33 @@ const queries = gql`
   }
 
   type Query {
-    user(_id: ID): User
+    user(_id: ID!): User
+  }
+
+  type Query {
+    userByEmail(email: String!): User
   }
 `;
 
 const mutations = gql`
   type Mutation {
-    addUser(input: AddUserInput!): User
+    register(input: RegisterInput!): User!
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): String!
   }
 `;
 
 const inputs = gql`
-  input AddUserInput {
+  input RegisterInput {
     email: String!
     documentId: Float!
     name: String!
     lastName: String!
     fullName: String!
     role: Role!
-    status: userStatus!
+    status: UserStatus!
     password: String!
   }
 `;

@@ -11,7 +11,7 @@ const projectType = gql`
     startDate: String!
     endDate: String!
     leader_id: ID!
-    status: projectStatus!
+    status: ProjectStatus!
     phase: Phase
     leader: User!
   }
@@ -19,7 +19,7 @@ const projectType = gql`
 
 const enums = gql`
   # Enum for status values
-  enum projectStatus {
+  enum ProjectStatus {
     ACTIVE
     INACTIVE
   }

@@ -17,7 +17,7 @@ const leader = async (parent, args, context, info) => {
 };
 
 export default {
-  Query: {
+  projectQueries: {
     allProjects,
     project,
   },

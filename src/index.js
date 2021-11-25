@@ -6,7 +6,7 @@ import http from 'http';
 import dotenv from 'dotenv';
 
 // middlewares
-import validateAccess from './middlewares/access.middlewares.js';
+import validateAuthentication from './middlewares/authentication.middlewares.js';
 
 // utilities
 import connect from './database.js';
@@ -28,6 +28,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    context: async ({ req }) => await validateAuthentication(req),
   });
   await server.start();
   server.applyMiddleware({ app });

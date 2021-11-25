@@ -21,20 +21,20 @@ db.createCollection(collection, {
       required: ['email', 'documentId', 'name', 'lastName', 'fullName', 'role', 'status'],
       properties: {
         email: {
-          type: 'string',
+          bsonType: 'string',
           pattern: '^[a-z0-9+_.-]+@[a-z0-9.-]+$'
         },
         documentId: {
-          type: 'number',
+          bsonType: 'number',
         },
         name: {
-          type: 'string'
+          bsonType: 'string'
         },
         lastName: {
-          type: 'string'
+          bsonType: 'string'
         },
         fullName: {
-          type: 'string'
+          bsonType: 'string'
         },
         role: {
           enum: ["ADMIN", "LEADER", "STUDENT"]
@@ -43,7 +43,7 @@ db.createCollection(collection, {
           enum: ["PENDING", "AUTHORIZED", "UNAUTHORIZED"]
         },
         password: {
-          type: 'string'
+          bsonType: 'string'
         }
       }
     }
@@ -57,7 +57,7 @@ db.getCollection(collection).createIndex({ documentId: 1 }, { unique: true });
 const users = [
   {
     "email": "tomas.anderson@mail.com",
-    "documentId": Long('1020345678'),
+    "documentId": 1020345678,
     "name": "Tomas",
     "lastName": "Anderson",
     "fullName": "Tomas Anderson",
@@ -67,7 +67,7 @@ const users = [
   },
   {
     "email": "peter.griffin@mail.com",
-    "documentId": Long('1234567890'),
+    "documentId": 1234567890,
     "name": "Peter",
     "lastName": "Griffin",
     "fullName": "Peter Griffin",
@@ -77,7 +77,7 @@ const users = [
   },
   {
     "email": "walter.white@mail.com",
-    "documentId": Long('1025342546'),
+    "documentId": 1025342546,
     "name": "Walter",
     "lastName": "White",
     "fullName": "Walter White",
@@ -87,7 +87,7 @@ const users = [
   },
   {
     "email": "rick.sanchez@mail.com",
-    "documentId": Long('1021587653'),
+    "documentId": 1021587653,
     "name": "Rick",
     "lastName": "Sanchez",
     "fullName": "Rick Sanchez",
@@ -97,7 +97,7 @@ const users = [
   },
   {
     "email": "john.snow@mail.com",
-    "documentId": Long('1022351234'),
+    "documentId": 1022351234,
     "name": "John",
     "lastName": "Snow",
     "fullName": "John Snow",
@@ -133,7 +133,7 @@ db.createCollection(collection, {
           bsonType: 'array'
         },
         budget: {
-          bsonType: 'decimal'
+          bsonType: 'number'
         },
         startDate: {
           bsonType: 'date'
