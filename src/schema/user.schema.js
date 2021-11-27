@@ -11,6 +11,7 @@ const userType = gql`
     fullName: String!
     role: Role!
     status: UserStatus!
+    projects: [Enrollment]
   }
 `;
 
@@ -37,7 +38,11 @@ const queries = gql`
   }
 
   type Query {
-    user(_id: ID!): User
+    userById(_id: ID!): User
+  }
+
+  type Query {
+    user: User!
   }
 
   type Query {
@@ -61,9 +66,7 @@ const inputs = gql`
     documentId: Float!
     name: String!
     lastName: String!
-    fullName: String!
     role: Role!
-    status: UserStatus!
     password: String!
   }
 `;

@@ -220,7 +220,7 @@ db.createCollection(collection, {
           bsonType: 'objectId'
         },
         status: {
-          enum: ['acepted', 'rejected']
+          enum: ['ACEPTED', 'REJECTED']
         },
         enrollmentDate: {
           bsonType: 'date'
@@ -239,7 +239,8 @@ db.getCollection(collection).createIndex({ project_id: 1, user_id: 1 }, { unique
 const enrollments = [
   {
     "project_id": db.projects.findOne({name: 'Project 1'}, {_id: 1})._id,
-    "user_id": db.users.findOne({email: 'peter.griffin@mail.com'}, {_id: 1})._id
+    "user_id": db.users.findOne({email: 'peter.griffin@mail.com'}, {_id: 1})._id,
+    "status": "ACEPTED"
   },
   {
     "project_id": db.projects.findOne({name: 'Project 1'}, {_id: 1})._id,

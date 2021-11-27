@@ -22,6 +22,8 @@ dotenv.config();
 connect();
 
 const startApolloServer = async (typeDefs, resolvers) => {
+  // eslint-disable-next-line no-undef
+  const PORT = process.env.PORT;
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
@@ -32,8 +34,8 @@ const startApolloServer = async (typeDefs, resolvers) => {
   });
   await server.start();
   server.applyMiddleware({ app });
-  await new Promise(resolve => httpServer.listen({ port: process.env.PORT }, resolve));
-  console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
+  await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
+  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
 };
 
 startApolloServer(typeDefs, resolvers);
