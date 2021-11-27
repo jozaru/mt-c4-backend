@@ -11,7 +11,7 @@ const userType = gql`
     fullName: String!
     role: Role!
     status: UserStatus!
-    projects: [Enrollment]
+    enrollments: [Enrollment]
   }
 `;
 

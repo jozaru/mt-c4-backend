@@ -17,9 +17,9 @@ const leader = async (parent) => {
   return user;
 };
 
-const students = async (parent) => {
-  const projectStudents = await Enrollements.find({ project_id: parent._id.toString() });
-  return projectStudents;
+const enrollments = async (parent) => {
+  const enrollments = await Enrollements.find({ project_id: parent._id.toString() });
+  return enrollments;
 }
 
 export default {
@@ -29,6 +29,6 @@ export default {
   },
   Project: {
     leader,
-    students,
+    enrollments,
   }
 };

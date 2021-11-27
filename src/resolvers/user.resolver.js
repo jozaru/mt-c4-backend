@@ -59,9 +59,9 @@ const login = async (parent, args) => {
   return token;
 };
 
-const projects = async (parent) => {
-  const userProjects = await Enrollements.find({ user_id: parent._id });
-  return userProjects;
+const enrollments = async (parent) => {
+  const enrollments = await Enrollements.find({ user_id: parent._id });
+  return enrollments;
 };
 
 export default {
@@ -75,6 +75,6 @@ export default {
     login,
   },
   User: {
-    projects,
+    enrollments,
   }
 }

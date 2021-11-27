@@ -4,6 +4,8 @@ const enrollmentType = gql`
   # Enrollment
   type Enrollment {
     status: EnrollmentStatus
+    enrollmentDate: String
+    egresDate: String
     project: Project!
     student: User!
   }
@@ -17,7 +19,15 @@ const enums = gql`
   }
 `;
 
+const queries = gql`
+  # Query all enrollments
+  type Query {
+    allEnrollments: [Enrollment]
+  }
+`;
+
 export default [
   enrollmentType,
   enums,
+  queries,
 ];
