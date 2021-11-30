@@ -19,7 +19,7 @@ const student = async (parent) => {
 };
 
 export default {
-  Query: {
+  enrollmentQueries: {
     allEnrollments
   },
   Enrollment: {

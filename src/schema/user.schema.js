@@ -17,7 +17,7 @@ const userType = gql`
 
 const enums = gql`
   # Enum for role values
-  enum Role {
+  enum UserRole {
     ADMIN
     LEADER
     STUDENT
@@ -66,7 +66,7 @@ const inputs = gql`
     documentId: Float!
     name: String!
     lastName: String!
-    role: Role!
+    role: UserRole!
     password: String!
   }
 `;
