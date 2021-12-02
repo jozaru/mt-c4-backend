@@ -6,7 +6,7 @@ import http from 'http';
 import dotenv from 'dotenv';
 
 // middlewares
-import validateAuthentication from './middlewares/authentication.middlewares.js';
+import validateAuthentication from './middlewares/authentication.middleware.js';
 
 // utilities
 import connect from './database.js';

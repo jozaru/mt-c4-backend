@@ -9,7 +9,7 @@ const userType = gql`
     name: String!
     lastName: String!
     fullName: String!
-    role: Role!
+    role: UserRole!
     status: UserStatus!
     enrollments: [Enrollment]
   }

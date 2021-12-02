@@ -1,15 +1,13 @@
 import { gql } from 'apollo-server';
 
-const roleType = gql`
-  # Role
+const roleType = gql `
   type Role {
     code: String!
     value: String!
   }
 `;
 
-const queries = gql`
-  # Query roles
+const miscQueries = gql`
   type Query {
     roles: [Role]
   }
@@ -17,5 +15,5 @@ const queries = gql`
 
 export default [
   roleType,
-  queries,
-];
+  miscQueries,
+]

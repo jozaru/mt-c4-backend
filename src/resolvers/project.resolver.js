@@ -2,7 +2,10 @@ import Projects from "../models/projects.model.js";
 import Users from "../models/users.model.js";
 import Enrollements from "../models/enrollments.model.js";
 
-const allProjects = async () => {
+const allProjects = async (parent, args, { user, errorMessage }) => {
+  if(!user) {
+    throw new Error(errorMessage);
+  }
   const projects = await Projects.find();
   return projects;
 };
