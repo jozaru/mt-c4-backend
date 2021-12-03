@@ -1,6 +1,7 @@
 // vendors
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { AuthenticationError } from 'apollo-server'
 
 // constants
 import { USER_STATUS, ROLES } from '../constants/user.constants.js';
@@ -11,7 +12,7 @@ import Enrollements from '../models/enrollments.model.js';
 
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if(!user) {
-    throw new Error(errorMessage);
+    throw new AuthenticationError(errorMessage);
   }
   if(user.role !== ROLES.ADMIN) {
     throw new Error('Access denied');
