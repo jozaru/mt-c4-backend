@@ -31,6 +31,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     context: async ({ req }) => await validateAuthentication(req),
+    introspection: true,
   });
   await server.start();
   server.applyMiddleware({ app });
