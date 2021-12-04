@@ -1,7 +1,7 @@
 // vendors
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { AuthenticationError } from 'apollo-server'
+import { AuthenticationError, ForbiddenError } from 'apollo-server';
 
 // constants
 import { USER_STATUS, ROLES } from '../constants/user.constants.js';
@@ -15,7 +15,7 @@ const allUsers = async (parent, args, { user, errorMessage }) => {
     throw new AuthenticationError(errorMessage);
   }
   if(user.role !== ROLES.ADMIN) {
-    throw new Error('Access denied');
+    throw new ForbiddenError('No access');
   }
   return await Users.find();
 };
@@ -65,6 +65,14 @@ const enrollments = async (parent) => {
   return enrollments;
 };
 
+const updateUser = async (parent, args, { user, errorMessage }) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
+  const updatedUser = Users.findByIdAndUpdate(user._id, { ...args.input }, { new: true });
+  return updatedUser;
+}
+
 export default {
   userQueries: {
     allUsers,
@@ -74,6 +82,7 @@ export default {
   userMutations: {
     register,
     login,
+    updateUser,
   },
   User: {
     enrollments,

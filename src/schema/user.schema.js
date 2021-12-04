@@ -58,6 +58,10 @@ const mutations = gql`
   type Mutation {
     login(email: String!, password: String!): String!
   }
+
+  type Mutation {
+    updateUser(input: UpdateInput!): User!
+  }
 `;
 
 const inputs = gql`
@@ -68,6 +72,15 @@ const inputs = gql`
     lastName: String!
     role: UserRole!
     password: String!
+  }
+
+  input UpdateInput {
+    email: String
+    documentId: Float
+    name: String
+    lastName: String
+    role: UserRole
+    status: UserStatus
   }
 `;
 
