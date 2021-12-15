@@ -24,4 +24,13 @@ jobs:
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: 8ece29f4-d8ec-4d71-b9bb-6423d37183b2
-        run: heroku container:login 
+        run: heroku container:login
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: 8ece29f4-d8ec-4d71-b9bb-6423d37183b2
+        run: heroku container:push -a mt-c4-backend web 
+      - name: Release
+        env:
+          HEROKU_API_KEY: 8ece29f4-d8ec-4d71-b9bb-6423d37183b2
+        run: heroku container:release -a mt-c4-backend web 
+
