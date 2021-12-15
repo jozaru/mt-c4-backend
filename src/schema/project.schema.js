@@ -44,8 +44,24 @@ const queries = gql`
   }
 `;
 
+const mutations = gql`
+  type Mutation {
+    updateProject(input: UpdateProjectInput!): Project!
+  }
+`;
+
+const inputs = gql`
+  input UpdateProjectInput {
+    _id: ID
+    name: String!
+    status: ProjectStatus!
+  }
+`;
+
 export default [
   projectType,
   enums,
-  queries
+  queries,
+  mutations,
+  inputs,
 ];

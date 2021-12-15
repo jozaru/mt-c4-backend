@@ -44,6 +44,7 @@ const userByEmail = async (parent, args) => {
 
 const login = async (parent, args) => {
   const user = await Users.findOne({ email: args.email });
+  const { fullName, role, email } = user;
   if (!user) {
     throw new Error('User not found');
   }
@@ -52,10 +53,14 @@ const login = async (parent, args) => {
     throw new Error('Wrong password');
   }
   const token = await jwt.sign(
-    { user },
+    { user: {
+      fullName,
+      role,
+      email,
+    } },
     // eslint-disable-next-line no-undef
     process.env.SECRET,
-    { expiresIn: '30m' }
+    { expiresIn: '15m' }
   );
   return token;
 };
@@ -69,8 +74,24 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
   if(!user) {
     throw new AuthenticationError(errorMessage);
   }
-  const updatedUser = Users.findByIdAndUpdate(user._id, { ...args.input }, { new: true });
+  const updatedUser = Users.findOneAndUpdate({ email: user.email }, { ...args.input }, { new: true });
   return updatedUser;
+};
+
+const refreshToken = async (parent, args,) => {
+  const user = await Users.findOne({ email: args.email });
+  const { fullName, role, email } = user;
+  const token = await jwt.sign(
+    { user: {
+      fullName,
+      role,
+      email,
+    } },
+    // eslint-disable-next-line no-undef
+    process.env.SECRET,
+    { expiresIn: '1m' }
+  );
+  return token;
 }
 
 export default {
@@ -78,6 +99,7 @@ export default {
     allUsers,
     user,
     userByEmail,
+    refreshToken,
   },
   userMutations: {
     register,

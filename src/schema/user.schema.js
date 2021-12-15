@@ -48,6 +48,10 @@ const queries = gql`
   type Query {
     userByEmail(email: String!): User
   }
+
+  type Query {
+    refreshToken(email: String!): String!
+  }
 `;
 
 const mutations = gql`

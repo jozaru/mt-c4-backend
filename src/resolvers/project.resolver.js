@@ -1,3 +1,7 @@
+// vendors
+import { AuthenticationError } from 'apollo-server';
+
+// models
 import Projects from "../models/projects.model.js";
 import Users from "../models/users.model.js";
 import Enrollements from "../models/enrollments.model.js";
@@ -23,12 +27,26 @@ const leader = async (parent) => {
 const enrollments = async (parent) => {
   const enrollments = await Enrollements.find({ project_id: parent._id.toString() });
   return enrollments;
-}
+};
+
+const updateProject = async (parent, args, { user, errorMessage }) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
+  const { _id, ...rest } = args.input;
+  const today = new Date();
+  const startDate = today - today.getTimezoneOffset() * 60000;
+  const updatedProject = Projects.findByIdAndUpdate(_id, { ...rest, startDate }, { new: true });
+  return updatedProject;
+};
 
 export default {
   projectQueries: {
     allProjects,
     project,
+  },
+  projectMutations: {
+    updateProject
   },
   Project: {
     leader,
