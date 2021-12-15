@@ -20,5 +20,3 @@ jobs:
         node-version: 16.x
         cache: 'npm'
     - run: yarn
-    - run: yarn run build --if-present
-    - run: yarn test
