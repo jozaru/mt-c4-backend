@@ -23,5 +23,5 @@ jobs:
       # Runs a single command using the runners shell
       - name: Login Heroku registry
         env: 
-          HEROKU_API_KEY: 672596c7-00f7-45a1-bec6-37aed6981aa3
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
