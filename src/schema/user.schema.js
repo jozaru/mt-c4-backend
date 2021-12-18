@@ -66,6 +66,10 @@ const mutations = gql`
   type Mutation {
     updateUser(input: UpdateInput!): User!
   }
+
+  type Mutation {
+    activateUser(userId: ID): User!
+  }
 `;
 
 const inputs = gql`

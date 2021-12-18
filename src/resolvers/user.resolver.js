@@ -92,7 +92,15 @@ const refreshToken = async (parent, args,) => {
     { expiresIn: '1m' }
   );
   return token;
-}
+};
+
+const activateUser = async (parent, args, { user, errorMessage }) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
+  const updatedUser = Users.findByIdAndUpdate(args.userId, { status: USER_STATUS.AUTHORIZED }, { new: true });
+  return updatedUser;
+};
 
 export default {
   userQueries: {
@@ -105,6 +113,7 @@ export default {
     register,
     login,
     updateUser,
+    activateUser,
   },
   User: {
     enrollments,
